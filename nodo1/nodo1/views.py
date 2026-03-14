@@ -1,11 +1,12 @@
 import os
+import uuid
 from django.conf import settings
+from archivos.models import fragmentoArchivo
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-
 @api_view(['POST'])
-def receive_file(request):
+def receiveFile(request):
 
     #Obtiene el archivo
     archivo = request.FILES.get('file')
@@ -38,9 +39,20 @@ def receive_file(request):
     with open(ruta_fragmento, "w", encoding="utf-8") as f:
         for linea in fragmento_lineas:
             f.write(linea + "\n")
+    
+    #Dando códigos únicos a cada fragmento de archivo
+    #Dios tengo sueño
+    nombreUnico = f"{archivo.name}_{uuid.uuid4()}"
+
+    fragmentoArchivo.objects.create(
+        nombre_archivo=nombreUnico,
+        nodo="nodo1",
+        fragmento="parte1",
+        ruta=ruta_fragmento
+    )
 
     return Response({
         "mensaje": "Nodo 1 guardó su fragmento",
         "lineas_guardadas": len(fragmento_lineas),
-        "ruta": ruta_fragmento
+        "contenidoNodo1":fragmento_lineas
     })

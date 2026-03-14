@@ -16,9 +16,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from .views import receive_file
+from .views import receiveFile
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/receiveFiles/', receive_file)
+    path('api/receiveFiles/', receiveFile)
 ]

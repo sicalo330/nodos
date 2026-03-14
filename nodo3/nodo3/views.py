@@ -1,5 +1,7 @@
 import os
+import uuid
 from django.conf import settings
+from archivos.models import fragmentoArchivo
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
@@ -40,8 +42,17 @@ def receive_file(request):
         for linea in fragmento_lineas:
             f.write(linea + "\n")
 
+    nombreUnico = f"{archivo.name}_{uuid.uuid4()}"
+
+    fragmentoArchivo.objects.create(
+        nombre_archivo=nombreUnico,
+        nodo="nodo3",
+        fragmento="parte3",
+        ruta=ruta_fragmento
+    )
+
     return Response({
         "mensaje": "Nodo 3 guardó su fragmento",
         "lineas_guardadas": len(fragmento_lineas),
-        "ruta": ruta_fragmento
+        "contenidoNodo3":fragmento_lineas
     })
