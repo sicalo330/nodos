@@ -1,0 +1,53 @@
+version: "3.9"
+
+services:
+
+  mysql_db:
+    image: mysql:8
+    container_name: mysql_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: nonstandardb
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  nodo1:
+    build: ./nodo1
+    ports:
+      - "8001:8000"
+    depends_on:
+      - mysql_db
+
+  nodo2:
+    build: ./nodo2
+    ports:
+      - "8002:8000"
+    depends_on:
+      - mysql_db
+
+  nodo3:
+    build: ./nodo3
+    ports:
+      - "8003:8000"
+    depends_on:
+      - mysql_db
+
+  nodo4:
+    build: ./nodo4
+    ports:
+      - "8004:8000"
+    depends_on:
+      - mysql_db
+
+  nodo5:
+    build: ./nodo5
+    ports:
+      - "8005:8000"
+    depends_on:
+      - mysql_db
+
+volumes:
+  mysql_data:
